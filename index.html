@@ -67,6 +67,62 @@
             75% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        .custom-checkbox {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #6B8E23;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .custom-checkbox:checked {
+            background-color: #6B8E23;
+            border-color: #6B8E23;
+        }
+        .custom-checkbox:checked::after {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            color: white;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .custom-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #6B8E23;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .custom-radio:checked {
+            background-color: #6B8E23;
+            border-color: #6B8E23;
+        }
+        .custom-radio:checked::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 font-body text-gray-800 dark:text-gray-200 min-h-screen">
@@ -74,7 +130,9 @@
         <!-- Header -->
         <header class="text-center mb-12">
             <div class="flex justify-center mb-6">
-                <img src="https://via.placeholder.com/150x150.png?text=I+F" alt="Logo Casamento" class="w-32 h-32 rounded-full border-4 border-olive-500 dark:border-olive-600 shadow-lg floating">
+                <div class="w-32 h-32 rounded-full border-4 border-olive-500 dark:border-olive-600 shadow-lg floating bg-olive-100 dark:bg-olive-800 flex items-center justify-center">
+                    <span class="text-4xl font-heading text-olive-700 dark:text-olive-300">I & F</span>
+                </div>
             </div>
             <h1 class="text-4xl md:text-5xl font-heading text-olive-700 dark:text-olive-400 mb-2">Iraneide & Flavio</h1>
             <div class="flex items-center justify-center space-x-4 mb-6">
@@ -93,9 +151,14 @@
                 <p class="text-center mb-6 text-gray-600 dark:text-gray-300">Por favor, digite seu primeiro nome para encontrarmos seu convite:</p>
                 
                 <div class="relative max-w-md mx-auto">
-                    <input type="text" id="nameSearch" placeholder="Digite seu primeiro nome" 
-                           class="w-full px-4 py-3 rounded-lg border border-olive-300 focus:border-olive-500 focus:ring-2 focus:ring-olive-200 dark:focus:ring-olive-700 transition-all duration-200">
-                    <div id="searchResults" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-lg shadow-lg hidden max-h-60 overflow-auto"></div>
+                    <div class="relative">
+                        <input type="text" id="nameSearch" placeholder="Digite seu primeiro nome"
+                               class="w-full px-4 py-3 rounded-lg border border-olive-300 focus:border-olive-500 focus:ring-2 focus:ring-olive-200 dark:focus:ring-olive-700 transition-all duration-200 pl-10">
+                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-olive-500">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div id="searchResults" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-lg shadow-lg hidden max-h-60 overflow-auto border border-olive-200 dark:border-gray-600"></div>
                 </div>
             </div>
 
@@ -104,8 +167,12 @@
                 <h2 class="text-2xl font-heading text-olive-700 dark:text-olive-400 mb-6 text-center">Confirme sua identidade</h2>
                 <p id="confirmText" class="text-center mb-8 text-lg"></p>
                 <div class="flex justify-center space-x-4">
-                    <button id="confirmYes" class="px-6 py-2 bg-olive-600 hover:bg-olive-700 text-white rounded-lg transition-colors duration-200">Sim</button>
-                    <button id="confirmNo" class="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-gray-200 rounded-lg transition-colors duration-200">Não</button>
+                    <button id="confirmYes" class="px-6 py-2 bg-olive-600 hover:bg-olive-700 text-white rounded-lg transition-colors duration-200 flex items-center">
+                        <i class="fas fa-check mr-2"></i> Sim
+                    </button>
+                    <button id="confirmNo" class="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-gray-200 rounded-lg transition-colors duration-200 flex items-center">
+                        <i class="fas fa-times mr-2"></i> Não
+                    </button>
                 </div>
             </div>
 
@@ -114,32 +181,45 @@
                 <h2 class="text-2xl font-heading text-olive-700 dark:text-olive-400 mb-6 text-center">Confirmação de Presença</h2>
                 <form id="rsvpForm">
                     <div class="mb-6">
-                        <label class="flex items-center">
-                            <input type="checkbox" id="attending" class="w-5 h-5 text-olive-600 rounded focus:ring-olive-500">
-                            <span class="ml-2 text-gray-700 dark:text-gray-300">Confirmo minha presença no casamento</span>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="attending" class="custom-checkbox">
+                            <span class="ml-3 text-gray-700 dark:text-gray-300">Confirmo minha presença no casamento</span>
                         </label>
                     </div>
                     
                     <div class="mb-6">
-                        <p class="mb-2 text-gray-700 dark:text-gray-300">Você trará um acompanhante?</p>
-                        <div class="flex space-x-4 mb-4">
-                            <label class="flex items-center">
-                                <input type="radio" name="companion" value="yes" class="w-5 h-5 text-olive-600 focus:ring-olive-500">
+                        <p class="mb-3 text-gray-700 dark:text-gray-300">Você trará acompanhantes?</p>
+                        <div class="flex space-x-6 mb-4">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="companion" value="yes" class="custom-radio">
                                 <span class="ml-2 text-gray-700 dark:text-gray-300">Sim</span>
                             </label>
-                            <label class="flex items-center">
-                                <input type="radio" name="companion" value="no" class="w-5 h-5 text-olive-600 focus:ring-olive-500" checked>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="companion" value="no" class="custom-radio" checked>
                                 <span class="ml-2 text-gray-700 dark:text-gray-300">Não</span>
                             </label>
                         </div>
-                        <div id="companionNameContainer" class="hidden">
-                            <label for="companionName" class="block mb-1 text-gray-700 dark:text-gray-300">Nome completo do acompanhante</label>
-                            <input type="text" id="companionName" class="w-full px-4 py-2 rounded-lg border border-olive-300 focus:border-olive-500 focus:ring-2 focus:ring-olive-200 dark:focus:ring-olive-700">
+                        <div id="companionFieldsContainer" class="hidden">
+                            <div class="mb-4">
+                                <label for="companion1" class="block mb-1 text-gray-700 dark:text-gray-300">Nome completo do acompanhante 1</label>
+                                <input type="text" id="companion1" class="w-full px-4 py-2 rounded-lg border border-olive-300 focus:border-olive-500 focus:ring-2 focus:ring-olive-200 dark:focus:ring-olive-700">
+                            </div>
+                            <div class="mb-4">
+                                <label for="companion2" class="block mb-1 text-gray-700 dark:text-gray-300">Nome completo do acompanhante 2</label>
+                                <input type="text" id="companion2" class="w-full px-4 py-2 rounded-lg border border-olive-300 focus:border-olive-500 focus:ring-2 focus:ring-olive-200 dark:focus:ring-olive-700">
+                            </div>
                         </div>
                     </div>
-                    
+
+                    <div class="mb-6">
+                        <label for="message" class="block mb-2 text-gray-700 dark:text-gray-300">Mensagem para os noivos (opcional)</label>
+                        <textarea id="message" rows="3" class="w-full px-4 py-2 rounded-lg border border-olive-300 focus:border-olive-500 focus:ring-2 focus:ring-olive-200 dark:focus:ring-olive-700"></textarea>
+                    </div>
+
                     <div class="text-center">
-                        <button type="submit" class="px-8 py-3 bg-olive-600 hover:bg-olive-700 text-white rounded-lg transition-colors duration-200">Confirmar</button>
+                        <button type="submit" class="px-8 py-3 bg-olive-600 hover:bg-olive-700 text-white rounded-lg transition-colors duration-200 flex items-center mx-auto">
+                            <i class="fas fa-paper-plane mr-2"></i> Confirmar Presença
+                        </button>
                     </div>
                 </form>
             </div>
@@ -165,21 +245,15 @@
     </div>
 
     <!-- Dark Mode Toggle -->
-    <button id="darkModeToggle" class="fixed bottom-4 right-4 w-12 h-12 rounded-full bg-olive-600 text-white shadow-lg flex items-center justify-center">
+    <button id="darkModeToggle" class="fixed bottom-4 right-4 w-12 h-12 rounded-full bg-olive-600 text-white shadow-lg flex items-center justify-center transition-transform hover:scale-110">
         <i class="fas fa-moon hidden"></i>
         <i class="fas fa-sun hidden"></i>
     </button>
 
     <script>
-        // Guest list
-        const guestList = [
-            "Flavio Henrique dos Reis Silva",
-            "Iraneide Pereira da Silva",
-            "Hugo Vaz dos Santos",
-            "Gabriel Henrique",
-            "Kleyton Marcos"
-        ];
-
+        // Google Sheets API endpoint
+        const GOOGLE_SHEETS_API = "https://script.google.com/macros/library/d/18VdAWEt53s2YLeu8sJGvmtABjqxGH7hzJjYlmGgM2Paw4cEZ43mZ9BKW/1";
+        
         // DOM Elements
         const nameSearch = document.getElementById('nameSearch');
         const searchResults = document.getElementById('searchResults');
@@ -193,24 +267,63 @@
         const rsvpForm = document.getElementById('rsvpForm');
         const attending = document.getElementById('attending');
         const companionRadios = document.querySelectorAll('input[name="companion"]');
-        const companionNameContainer = document.getElementById('companionNameContainer');
-        const companionName = document.getElementById('companionName');
+        const companionFieldsContainer = document.getElementById('companionFieldsContainer');
+        const companion1 = document.getElementById('companion1');
+        const companion2 = document.getElementById('companion2');
         const darkModeToggle = document.getElementById('darkModeToggle');
         const moonIcon = darkModeToggle.querySelector('.fa-moon');
         const sunIcon = darkModeToggle.querySelector('.fa-sun');
-
+        
         // Current guest
         let currentGuest = null;
-
-        // Dark mode handling
-        if (localStorage.getItem('darkMode') === 'true' || 
-            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            sunIcon.classList.remove('hidden');
-        } else {
-            moonIcon.classList.remove('hidden');
+        let guestList = [];
+        
+        // Fetch guest list from Google Sheets
+        async function fetchGuestList() {
+            try {
+                const response = await fetch(`${GOOGLE_SHEETS_API}?action=getGuests`);
+                const data = await response.json();
+                
+                if (data.success && data.guests) {
+                    guestList = data.guests;
+                } else {
+                    // Fallback guest list in case API fails
+                    guestList = [
+                        "Flavio Henrique dos Reis Silva",
+                        "Iraneide Pereira da Silva",
+                        "Hugo Vaz dos Santos",
+                        "Gabriel Henrique",
+                        "Kleyton Marcos"
+                    ];
+                }
+            } catch (error) {
+                console.error("Error fetching guest list:", error);
+                // Fallback guest list
+                guestList = [
+                    "Flavio Henrique dos Reis Silva",
+                    "Iraneide Pereira da Silva",
+                    "Hugo Vaz dos Santos",
+                    "Gabriel Henrique",
+                    "Kleyton Marcos"
+                ];
+            }
         }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchGuestList();
+            
+            // Dark mode handling
+            if (localStorage.getItem('darkMode') === 'true' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+            } else {
+                moonIcon.classList.remove('hidden');
+            }
+        });
 
+        // Dark mode toggle
         darkModeToggle.addEventListener('click', () => {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
@@ -239,7 +352,10 @@
             
             if (matches.length > 0) {
                 searchResults.innerHTML = matches.map(guest => 
-                    <div class="px-4 py-2 hover:bg-olive-100 dark:hover:bg-gray-600 cursor-pointer border-b border-olive-100 dark:border-gray-600 last:border-0">${guest}</div>
+                    `<div class="px-4 py-3 hover:bg-olive-100 dark:hover:bg-gray-600 cursor-pointer border-b border-olive-100 dark:border-gray-600 last:border-0 flex items-center">
+                        <i class="fas fa-user-circle text-olive-500 mr-3"></i>
+                        <span>${guest}</span>
+                    </div>`
                 ).join('');
                 
                 // Add click event to each result
@@ -251,7 +367,7 @@
                 
                 searchResults.classList.remove('hidden');
             } else {
-                searchResults.innerHTML = '<div class="px-4 py-2 text-gray-500">Nenhum resultado encontrado</div>';
+                searchResults.innerHTML = '<div class="px-4 py-3 text-gray-500 text-center"><i class="fas fa-exclamation-circle mr-2"></i>Nenhum resultado encontrado</div>';
                 searchResults.classList.remove('hidden');
             }
         });
@@ -264,7 +380,7 @@
             
             // Move to step 2
             step1.classList.add('hidden');
-            confirmText.textContent = Você é ${guest}?;
+            confirmText.textContent = `Você é ${guest}?`;
             step2.classList.remove('hidden');
         }
 
@@ -285,46 +401,83 @@
         companionRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'yes') {
-                    companionNameContainer.classList.remove('hidden');
+                    companionFieldsContainer.classList.remove('hidden');
                 } else {
-                    companionNameContainer.classList.add('hidden');
-                    companionName.value = '';
+                    companionFieldsContainer.classList.add('hidden');
+                    companion1.value = '';
+                    companion2.value = '';
                 }
             });
         });
 
         // Form submission
-        rsvpForm.addEventListener('submit', (e) => {
+        rsvpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Here you would normally send data to Google Sheets
-            // For demo purposes, we'll just log it and show the thank you message
             const formData = {
                 guestName: currentGuest,
                 attending: attending.checked ? 'Sim' : 'Não',
-                companion: document.querySelector('input[name="companion"]:checked').value === 'yes' ? companionName.value : 'Não'
+                bringingCompanions: document.querySelector('input[name="companion"]:checked').value === 'yes' ? 'Sim' : 'Não',
+                companion1: companion1.value || 'Nenhum',
+                companion2: companion2.value || 'Nenhum',
+                message: document.getElementById('message').value || 'Nenhuma',
+                timestamp: new Date().toISOString()
             };
-            
-            console.log('Form data to be sent to Google Sheets:', formData);
-            
-            // Simulate sending to Google Sheets (in a real app, you'd use Google Apps Script)
-            setTimeout(() => {
-                step3.classList.add('hidden');
-                step4.classList.remove('hidden');
+
+            try {
+                // Show loading state
+                const submitBtn = rsvpForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+                submitBtn.disabled = true;
                 
-                // Reset form after showing thank you message
-                setTimeout(() => {
-                    currentGuest = null;
-                    nameSearch.value = '';
-                    attending.checked = false;
-                    document.querySelector('input[name="companion"][value="no"]').checked = true;
-                    companionNameContainer.classList.add('hidden');
-                    companionName.value = '';
+                // Send data to Google Sheets
+                const response = await fetch(GOOGLE_SHEETS_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'submitRSVP',
+                        data: formData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Success - show thank you message
+                    step3.classList.add('hidden');
+                    step4.classList.remove('hidden');
                     
-                    step4.classList.add('hidden');
-                    step1.classList.remove('hidden');
-                }, 5000);
-            }, 1000);
+                    // Reset form after showing thank you message
+                    setTimeout(() => {
+                        currentGuest = null;
+                        nameSearch.value = '';
+                        attending.checked = false;
+                        document.querySelector('input[name="companion"][value="no"]').checked = true;
+                        companionFieldsContainer.classList.add('hidden');
+                        companion1.value = '';
+                        companion2.value = '';
+                        document.getElementById('message').value = '';
+                        
+                        step4.classList.add('hidden');
+                        step1.classList.remove('hidden');
+                    }, 5000);
+                } else {
+                    // Error handling
+                    alert('Ocorreu um erro ao enviar sua confirmação. Por favor, tente novamente mais tarde.');
+                    console.error('Error submitting RSVP:', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ocorreu um erro ao enviar sua confirmação. Por favor, tente novamente mais tarde.');
+            } finally {
+                // Reset button state
+                const submitBtn = rsvpForm.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
         });
 
         // Close search results when clicking outside
